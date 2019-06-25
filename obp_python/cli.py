@@ -23,6 +23,7 @@ from .addFx import addFx
 from .createAccount import createAccount
 from .createBank import createBank
 from .createCustomer import createCustomer
+from .createProduct import createProduct
 from .linkUserToCustomer import linkUserToCustomer
 from .getBanks import getBanks
 from .getCards import getCards
@@ -341,6 +342,37 @@ def addcustomer(bank_id, username, customer_number, legal_name, title,
 def LinkUserToCustomer(bank_id, user_id, customer_id):
   req = linkUserToCustomer(bank_id=bank_id, user_id=user_id, 
                           customer_id=customer_id)
+  if req.status_code == 201 or req.status_code == 200:
+    click.echo(req.text)
+  else:
+    exit(req.text)
+
+@cli.command(help="🧸 Add  a product")
+@click.option('--bank-id', prompt=True, default="gh.29.uk.x")
+@click.option('--product-id', prompt=True, required=True)
+@click.option('--name', prompt=True, required=True)
+@click.option('--parent_product_code', required=False, default="")
+@click.option('--category', required=False, default="")
+@click.option('--family', required=False, default="")
+@click.option('--super-family', required=False, default="")
+@click.option('--more-info-url', required=False, default="")
+@click.option('--details', required=False, default="")
+@click.option('--description', required=False, default="")
+@click.option('--meta_license_id', required=False, default=5)
+@click.option('--meta_license_name', required=False, default="Tesobe")
+def addproduct(bank_id, product_id, name,
+                 parent_product_code, category,
+                 family, super_family, more_info_url,
+                 details, description, meta_license_id,
+                 meta_license_name):
+
+  req = createProduct(bank_id=bank_id, product_id=product_id, name=name,
+                 parent_product_code=parent_product_code, category=category,
+                 family=family, super_family=super_family, 
+                 more_info_url=more_info_url, details=details, 
+                 description=details, meta_license_id=meta_license_id,
+                 meta_license_name=meta_license_name)
+
   if req.status_code == 201 or req.status_code == 200:
     click.echo(req.text)
   else:
